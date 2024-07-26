@@ -210,7 +210,7 @@ def send_whatsapp_message(username, message):
     user = check_user(username)
     if user:
         to_whatsapp_number = 'whatsapp:' + user[2]  # Index 2 corresponds to the WhatsApp number in the database
-        from_whatsapp_number = 'whatsapp:+14155238886'  # Your Twilio WhatsApp number
+        from_whatsapp_number = 'whatsapp:Your_Twilio_WhatsApp_number'  # Your Twilio WhatsApp number
 
         # Send the WhatsApp message using Twilio
         client.messages.create(
