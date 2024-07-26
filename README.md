@@ -22,23 +22,26 @@ This project implements a video violence detection application with user authent
 * tensorflow (for violence detection model)
 * requests
 
-## How To Create a Twilio for `account_sid` and `auth_token`
-To get your Twilio account_sid and auth_token, you need to follow these steps:
+# Twilio Integration
 
-1.Sign in to Twilio: 
-Go to the Twilio website and sign in to your account. If you don't have an account, you'll need to create one.
+## Getting Started
 
-2.Navigate to the Console:
-Once you're signed in, click on the "Console" link at the top right of the page.
+To use Twilio in your project, you will need your Twilio `account_sid` and `auth_token`. Follow the steps below to retrieve them:
 
-3.Find your Account SID and Auth Token:
-In the Console, you'll see your Account SID and Auth Token on the dashboard. They are located under the "Project Info" section.
+1. **Sign in to Twilio:**
+   Go to the [Twilio website](https://www.twilio.com/) and sign in to your account. If you don't have an account, you'll need to create one.
 
-Account SID: This is a unique identifier for your Twilio account.
-Auth Token: This is a secret key used to authenticate requests to the Twilio API.
+2. **Navigate to the Console:**
+   Once you're signed in, click on the "Console" link at the top right of the page.
 
-4.Copy the Credentials:
-Copy your account_sid and auth_token from the dashboard. Be careful with the auth_token, as it is sensitive information
+3. **Find your Account SID and Auth Token:**
+   In the Console, you'll see your Account SID and Auth Token on the dashboard. They are located under the "Project Info" section.
+
+   - **Account SID**: This is a unique identifier for your Twilio account.
+   - **Auth Token**: This is a secret key used to authenticate requests to the Twilio API.
+
+4. **Copy the Credentials:**
+   Copy your `account_sid` and `auth_token` from the dashboard. Be careful with the `auth_token`, as it is sensitive information.
 
 ## How to Run
 
