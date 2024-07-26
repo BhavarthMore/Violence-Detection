@@ -22,9 +22,7 @@ This project implements a video violence detection application with user authent
 * tensorflow (for violence detection model)
 * requests
 
-# Twilio Integration
-
-## Getting Started
+## Twilio Integration
 
 To use Twilio in your project, you will need your Twilio `account_sid` and `auth_token`. Follow the steps below to retrieve them:
 
