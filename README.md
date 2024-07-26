@@ -37,16 +37,19 @@ To use Twilio in your project, you will need your Twilio `account_sid` and `auth
 
    - **Account SID**: This is a unique identifier for your Twilio account.
    - **Auth Token**: This is a secret key used to authenticate requests to the Twilio API.
+   - **Twilio-Whatsapp_number**: This is the Number given after making a Twilio account.
 
 4. **Copy the Credentials:**
    Copy your `account_sid` and `auth_token` from the dashboard. Be careful with the `auth_token`, as it is sensitive information.
+   Twilio-Whatsapp_number can be found in Twilio Console under  Messaging -> Try it out-> Send a Whatsapp Message.
 
 ## How to Run
 
 1. Install the required dependencies using `pip install requirements.txt`.
-2. Replace the placeholder paths in the code for the violence detection model (`modelnew.h5`) and audio alarm tone (`alarm_tone.mp3`).
-3. Configure your Twilio account credentials (`account_sid` and `auth_token`) for WhatsApp messaging.
-4. Run the application using `python main.py`.
+2. Go to Violence Detection System directory using `cd '.\Violence Detection System\'`
+3. Replace the placeholder paths in the code for the violence detection model (`modelnew.h5`) and audio alarm tone (`alarm_tone.mp3`).
+4. Configure your Twilio account credentials (`account_sid` ,`auth_token` and `from_whatsapp_number`) for WhatsApp messaging.
+5. Run the application using `python '.\test copy.py'`.
 
 ## Usage
 
