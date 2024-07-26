@@ -17,8 +17,8 @@ import pycountry  # Import pycountry for country code validation
 # Initialize pygame mixer for sound
 pygame.mixer.init()
 # Initialize the Twilio client
-account_sid = 'Your_Twilio_SID'
-auth_token = 'Your_Twilio_Token'
+account_sid = 'YOUR_TWILIO_SID'
+auth_token = 'YOUR_TWILIO_TOKEN'
 client = Client(account_sid, auth_token)
 audio_stop_event = threading.Event()
 audio_playing = False
@@ -109,9 +109,8 @@ def login():
     else:
         login_status.set("Invalid username or password")
 
-# Function to handle sign up button click event
 def open_signup_window():
-    global signup_window, username_entry, password_entry, whatsapp_entry, signup_status, country_var
+    global signup_window, username_entry, password_entry, country_code_entry, whatsapp_entry, signup_status
     signup_window = tk.Toplevel()
     signup_window.title("Sign Up")
 
@@ -127,11 +126,11 @@ def open_signup_window():
     password_entry = tk.Entry(signup_window, show="*")
     password_entry.pack()
 
-    # Create country dropdown and WhatsApp number entry
-    country_label = tk.Label(signup_window, text="Country:")
-    country_label.pack()
-    country_var = create_country_dropdown(signup_window)
-    country_var.set('Select Country')  # Set default value
+    # Create country code and WhatsApp number entry
+    country_code_label = tk.Label(signup_window, text="Country Code (e.g., +1):")
+    country_code_label.pack()
+    country_code_entry = tk.Entry(signup_window)
+    country_code_entry.pack()
 
     whatsapp_label = tk.Label(signup_window, text="WhatsApp Number:")
     whatsapp_label.pack()
@@ -147,38 +146,28 @@ def open_signup_window():
     signup_status_label = tk.Label(signup_window, textvariable=signup_status)
     signup_status_label.pack()
 
-# Function to create a dropdown menu for selecting the country
-def create_country_dropdown(signup_window):
-    countries = {country.name: country.alpha_2 for country in pycountry.countries}
-    country_var = tk.StringVar()
-    country_dropdown = tk.OptionMenu(signup_window, country_var, *countries.keys())
-    country_dropdown.pack()
-    return country_var
-
-# Function to validate the provided mobile number based on the selected country's length
-def validate_mobile_number(whatsapp_number, country_code):
-    country_code = pycountry.countries.get(alpha_2=country_code).numeric
-    country_code_len = len(country_code)
-    return len(whatsapp_number) == country_code_len + 10  # Length of mobile number with country code
+# Function to validate the provided mobile number
+def validate_mobile_number(whatsapp_number):
+    return len(whatsapp_number) >= 10 # Basic validation for mobile number length
 
 # Function to handle sign up
 def sign_up():
     username = username_entry.get()
     password = password_entry.get()
-    country_name = country_var.get()
-    country_code = pycountry.countries.get(name=country_name).alpha_2
+    country_code = country_code_entry.get()
     whatsapp_number = whatsapp_entry.get()
+    full_whatsapp_number = country_code + whatsapp_number
 
-    if validate_mobile_number(whatsapp_number, country_code):
-        if register_user(username, password, whatsapp_number):
+    if validate_mobile_number(whatsapp_number):
+        if register_user(username, password, full_whatsapp_number):
             signup_status.set("User registered successfully. Please log in.")
             # Generate QR code for WhatsApp verification
-            qr_code_file = generate_qr_code(whatsapp_number)
+            qr_code_file = generate_qr_code(full_whatsapp_number)
             display_qr_code(qr_code_file)
         else:
             signup_status.set("Username already exists. Please choose another.")
     else:
-        signup_status.set("Invalid WhatsApp number length for the selected country.")
+        signup_status.set("Invalid WhatsApp number length.")
 
 # Function to open the main application GUI
 def open_main_gui(username):
