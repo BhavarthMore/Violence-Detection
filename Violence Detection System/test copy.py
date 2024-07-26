@@ -218,26 +218,44 @@ def send_whatsapp_message(username, message):
             from_=from_whatsapp_number,
             to=to_whatsapp_number
         )
-        print(to_whatsapp_number)
+        
     else:
         print("User not found.")
 
+import requests
+
 def get_location_info():
     try:
-        # Requesting data from ipinfo.io
-        response = requests.get('https://ipinfo.io')
-        data = response.json()
+        response = requests.get('https://ipinfo.io/json')
+        response.raise_for_status()  # Check for HTTP errors
 
-        # Extracting location information
-        location = data.get('loc')
-        if location:
-            # Splitting the location data into latitude and longitude
-            lat, lon = location.split(',')
-            return str(lat), str(lon)
+        # Check if the response is not empty and has a valid JSON
+        if response.text:
+            try:
+                data = response.json()
+                location = data.get('loc')
+                if location:
+                    # Split the location data into latitude and longitude
+                    lat, lon = location.split(',')
+                    return str(lat), str(lon)
+                else:
+                    print("Location information not found in response.")
+                    return None, None
+            except ValueError as json_err:
+                print(f'JSON decoding error: {json_err}')
+                print('Response content:', response.text)
+                return None, None
         else:
-            print("Unable to fetch location information.")
-    except Exception as e:
-        print("An error occurred:", e)
+            print('Empty response received')
+            return None, None
+
+    except requests.exceptions.HTTPError as http_err:
+        print(f'HTTP error occurred: {http_err}')
+        return None, None
+    except requests.exceptions.RequestException as req_err:
+        print(f'Request error occurred: {req_err}')
+        return None, None
+
 
 # Define the function to analyze live video
 def analyze_live_video():
@@ -257,15 +275,27 @@ def analyze_video_file():
 # Define a function to get the device's location
 def get_device_location():
     latitude, longitude = get_location_info()
-    
-    url = f'https://nominatim.openstreetmap.org/reverse?lat={latitude}&lon={longitude}&format=json'
-    response = requests.get(url)
-    data = response.json()
-    if 'display_name' in data:
-        location = data['display_name']
-        return location
+    if latitude and longitude:
+        try:
+            url = f'https://nominatim.openstreetmap.org/reverse?lat={latitude}&lon={longitude}&format=json'
+            response = requests.get(url)
+            response.raise_for_status()  # Check for HTTP errors
+
+            data = response.json()
+            if 'display_name' in data:
+                location = data['display_name']
+                return location
+            else:
+                return "Error: Unable to fetch location information."
+        except requests.exceptions.RequestException as req_err:
+            print(f'Request error occurred: {req_err}')
+            return "Error: Unable to fetch location information."
+        except ValueError as json_err:
+            print(f'JSON decoding error: {json_err}')
+            return "Error: Unable to fetch location information."
     else:
-        return "Error: Unable to fetch location information."
+        return "Error: No location information available."
+
     
 
 # Define a function to get the current time
